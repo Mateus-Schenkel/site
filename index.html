@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>Uma Carta Para Você</title>
   <style>
     :root{
@@ -23,10 +23,12 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:24px;
+      padding:24px 12px; /* menos padding lateral em telas pequenas */
+      min-height: 100vh;
     }
     .wrap{
       width:min(860px, 100%);
+      max-width: 100%;
     }
     .card{
       background:var(--paper);
@@ -34,17 +36,23 @@
       padding:clamp(20px, 4vw, 44px);
       box-shadow:0 12px 40px var(--shadow);
       position:relative;
-      overflow:hidden;
+      overflow: visible; /* importante para o coração não cortar */
       border: 1px solid #f3e3ea;
+      display: flex;
+      flex-direction: column;
+      min-height: 300px; /* garantir altura mínima */
     }
     .heart{
       position:absolute;
-      inset:auto -60px -60px auto;
+      top: -60px;
+      right: -60px;
       width:200px;
       opacity:.09;
       transform:rotate(-18deg);
       animation:float 6s ease-in-out infinite;
       pointer-events:none;
+      user-select:none;
+      z-index: 0;
     }
     @keyframes float{
       0%,100%{ transform:translateY(0) rotate(-18deg) }
@@ -55,31 +63,50 @@
       font-weight:800;
       font-size:clamp(28px, 5vw, 40px);
       letter-spacing:.5px;
+      position: relative;
+      z-index: 1;
+      word-break: break-word;
     }
     .subtitle{
       margin:0 0 24px 0;
       color:#714b58;
       font-style:italic;
+      position: relative;
+      z-index: 1;
     }
     .body{
       font-size:clamp(16px, 2.2vw, 19px);
-      white-space:pre-wrap;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      position: relative;
+      z-index: 1;
+    }
+    .body p {
+      margin-top: 0;
+      margin-bottom: 1em;
     }
     .closing{
       margin-top:28px;
       font-weight:600;
+      position: relative;
+      z-index: 1;
     }
     .sig{
       margin-top:6px;
       font-family: "Georgia", "Times New Roman", serif;
       font-size:clamp(18px, 3vw, 22px);
       color:#7a3648;
+      outline: none;
+      position: relative;
+      z-index: 1;
     }
     .actions{
       display:flex;
       gap:12px;
       margin-top:26px;
       flex-wrap:wrap;
+      position: relative;
+      z-index: 1;
     }
     button, a.btn{
       border:0;
@@ -92,6 +119,7 @@
       text-decoration:none;
       box-shadow:0 8px 22px rgba(225,29,72,.25);
       transition:.2s transform, .2s opacity, .2s box-shadow;
+      user-select: none;
     }
     button:hover, a.btn:hover{
       transform:translateY(-1px);
@@ -112,6 +140,7 @@
     /* pequenos corações animados */
     .confetti{
       position:absolute; inset:0; pointer-events:none;
+      z-index: 0;
     }
     .dot{
       position:absolute; width:12px; height:12px;
@@ -132,6 +161,17 @@
       from{ transform: translate(var(--x), 110%) rotate(45deg) }
       to  { transform: translate(calc(var(--x) + 10px), -20%) rotate(45deg) }
     }
+    @media (max-width: 400px){
+      body {
+        padding: 16px 8px;
+      }
+      .card {
+        padding: 20px 16px;
+      }
+      .body {
+        font-size: 16px;
+      }
+    }
     @media print{
       .actions, footer{ display:none }
       body{ background:white; }
@@ -141,9 +181,9 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="card" role="article" aria-label="Carta romântica">
+    <article class="card" role="article" aria-label="Carta romântica">
       <!-- ícone de coração grande e discreto -->
-      <svg class="heart" viewBox="0 0 24 24" aria-hidden="true">
+      <svg class="heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false" >
         <path d="M12 21s-6.7-4.35-9.3-7.2C.5 11.3.9 7.6 3.7 5.8 6.6 3.9 9.3 5.4 12 8c2.7-2.6 5.4-4.1 8.3-2.2 2.8 1.8 3.2 5.5.9 8-2.6 2.85-9.2 7.2-9.2 7.2z" fill="currentColor"/>
       </svg>
 
@@ -156,13 +196,16 @@
         <div class="dot" style="--x:85%"></div>
       </div>
 
-      <h1>Para <span contenteditable="true">Duda</span></h1>
+      <h1>Para <span contenteditable="true">[Nome]</span></h1>
       <p class="subtitle">um pedacinho do que sinto por você</p>
 
       <div class="body">
         <p>
           Desde que te conheci, alguns detalhes do mundo ficaram mais bonitos:
-          o café parece mais cheiroso, a música soa mais bela. Eu gosto de como a nossa conversa flui.
+          o café parece mais cheiroso, a música soa mais doce e o tempo passa
+          no ritmo das tuas risadas. Eu gosto de como a nossa conversa flui,
+          de como você me olha com calma, e de como tudo fica leve quando a
+          gente divide até os silêncios.
         </p>
         <p>
           Não quero apressar nada — só quero estar por perto, descobrindo aos
@@ -177,13 +220,13 @@
       </div>
 
       <div class="closing">Com carinho,</div>
-      <div class="sig" contenteditable="true">Mateus</div>
+      <div class="sig" contenteditable="true" aria-label="Assinatura">[Seu nome]</div>
 
       <div class="actions" aria-label="Ações">
         <button onclick="window.print()">Imprimir</button>
         <a class="btn ghost" href="#" onclick="compartilhar(event)">Compartilhar</a>
       </div>
-    </div>
+    </article>
 
     <footer>
       Dica: clique em <em>[Nome]</em> e <em>[Seu nome]</em> para editar diretamente.
