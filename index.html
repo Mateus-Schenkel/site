@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Uma Carta Para Você</title>
+  <style>
+    :root{
+      --bg1:#fdf2f8;   /* rosa bem claro */
+      --bg2:#ffffff;
+      --ink:#3a2d2d;   /* marrom suave para o texto */
+      --accent:#e11d48;/* vermelho-rosa */
+      --paper:#fffafc; /* “papel” */
+      --shadow: rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 80% 0%, var(--bg1), var(--bg2));
+      color:var(--ink);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .wrap{
+      width:min(860px, 100%);
+    }
+    .card{
+      background:var(--paper);
+      border-radius:24px;
+      padding:clamp(20px, 4vw, 44px);
+      box-shadow:0 12px 40px var(--shadow);
+      position:relative;
+      overflow:hidden;
+      border: 1px solid #f3e3ea;
+    }
+    .heart{
+      position:absolute;
+      inset:auto -60px -60px auto;
+      width:200px;
+      opacity:.09;
+      transform:rotate(-18deg);
+      animation:float 6s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes float{
+      0%,100%{ transform:translateY(0) rotate(-18deg) }
+      50%{ transform:translateY(-10px) rotate(-18deg) }
+    }
+    h1{
+      margin:0 0 12px 0;
+      font-weight:800;
+      font-size:clamp(28px, 5vw, 40px);
+      letter-spacing:.5px;
+    }
+    .subtitle{
+      margin:0 0 24px 0;
+      color:#714b58;
+      font-style:italic;
+    }
+    .body{
+      font-size:clamp(16px, 2.2vw, 19px);
+      white-space:pre-wrap;
+    }
+    .closing{
+      margin-top:28px;
+      font-weight:600;
+    }
+    .sig{
+      margin-top:6px;
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size:clamp(18px, 3vw, 22px);
+      color:#7a3648;
+    }
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:26px;
+      flex-wrap:wrap;
+    }
+    button, a.btn{
+      border:0;
+      padding:10px 16px;
+      border-radius:999px;
+      background:var(--accent);
+      color:white;
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:none;
+      box-shadow:0 8px 22px rgba(225,29,72,.25);
+      transition:.2s transform, .2s opacity, .2s box-shadow;
+    }
+    button:hover, a.btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 26px rgba(225,29,72,.32);
+    }
+    .ghost{
+      background:transparent;
+      color:var(--accent);
+      border:2px solid var(--accent);
+      box-shadow:none;
+    }
+    footer{
+      text-align:center;
+      margin-top:16px;
+      font-size:12px;
+      color:#9a6f7f;
+    }
+    /* pequenos corações animados */
+    .confetti{
+      position:absolute; inset:0; pointer-events:none;
+    }
+    .dot{
+      position:absolute; width:12px; height:12px;
+      transform:translate(-50%, -50%) rotate(45deg);
+      animation: drift 7s linear infinite;
+      opacity:.18;
+    }
+    .dot::before, .dot::after{
+      content:"";
+      position:absolute;
+      width:12px; height:12px; background:var(--accent);
+      border-radius:50%
+    }
+    .dot{ background:var(--accent); }
+    .dot::before{ left:-6px; }
+    .dot::after{ top:-6px; }
+    @keyframes drift{
+      from{ transform: translate(var(--x), 110%) rotate(45deg) }
+      to  { transform: translate(calc(var(--x) + 10px), -20%) rotate(45deg) }
+    }
+    @media print{
+      .actions, footer{ display:none }
+      body{ background:white; }
+      .card{ box-shadow:none; border:0 }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="article" aria-label="Carta romântica">
+      <!-- ícone de coração grande e discreto -->
+      <svg class="heart" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s-6.7-4.35-9.3-7.2C.5 11.3.9 7.6 3.7 5.8 6.6 3.9 9.3 5.4 12 8c2.7-2.6 5.4-4.1 8.3-2.2 2.8 1.8 3.2 5.5.9 8-2.6 2.85-9.2 7.2-9.2 7.2z" fill="currentColor"/>
+      </svg>
+
+      <!-- corações flutuantes -->
+      <div class="confetti" aria-hidden="true">
+        <div class="dot" style="--x:10%"></div>
+        <div class="dot" style="--x:30%"></div>
+        <div class="dot" style="--x:50%"></div>
+        <div class="dot" style="--x:70%"></div>
+        <div class="dot" style="--x:85%"></div>
+      </div>
+
+      <h1>Para <span contenteditable="true">Duda</span></h1>
+      <p class="subtitle">um pedacinho do que sinto por você</p>
+
+      <div class="body">
+        <p>
+          Desde que te conheci, alguns detalhes do mundo ficaram mais bonitos:
+          o café parece mais cheiroso, a música soa mais bela. Eu gosto de como a nossa conversa flui.
+        </p>
+        <p>
+          Não quero apressar nada — só quero estar por perto, descobrindo aos
+          poucos o teu jeito de ver a vida. Se você topar, eu topo seguir
+          construindo algo sincero, do nosso jeito, com cuidado, respeito e um
+          tantinho de poesia no meio do caminho.
+        </p>
+        <p>
+          Obrigado(a) por existir exatamente como você é. Você tem sido a minha
+          coincidência favorita.
+        </p>
+      </div>
+
+      <div class="closing">Com carinho,</div>
+      <div class="sig" contenteditable="true">Mateus</div>
+
+      <div class="actions" aria-label="Ações">
+        <button onclick="window.print()">Imprimir</button>
+        <a class="btn ghost" href="#" onclick="compartilhar(event)">Compartilhar</a>
+      </div>
+    </div>
+
+    <footer>
+      Dica: clique em <em>[Nome]</em> e <em>[Seu nome]</em> para editar diretamente.
+    </footer>
+  </div>
+
+  <script>
+    // Compartilhar usando a Web Share API (quando disponível)
+    function compartilhar(e){
+      e.preventDefault();
+      const nome = document.querySelector('h1 span').innerText.trim() || "você";
+      const assin = document.querySelector('.sig').innerText.trim() || "eu";
+      const texto = `Para ${nome}\n\n` +
+        `Desde que te conheci, alguns detalhes do mundo ficaram mais bonitos... \n` +
+        `Obrigado(a) por existir exatamente como você é. Você tem sido a minha coincidência favorita.\n\n` +
+        `Com carinho,\n${assin}`;
+      if(navigator.share){
+        navigator.share({ title: "Uma carta para você", text: texto })
+          .catch(()=>{});
+      }else{
+        alert("Copiei o texto pra você colar onde quiser. ❤️");
+        copiar(texto);
+      }
+    }
+    function copiar(t){
+      const ta = document.createElement('textarea');
+      ta.value = t;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+  </script>
+</body>
+</html>
