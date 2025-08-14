@@ -1,264 +1,258 @@
-<!doctype html>
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>Uma Carta Para Você</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Carta para você</title>
+  <meta name="color-scheme" content="light">
   <style>
     :root{
-      --bg1:#fdf2f8;   /* rosa bem claro */
-      --bg2:#ffffff;
-      --ink:#3a2d2d;   /* marrom suave para o texto */
-      --accent:#e11d48;/* vermelho-rosa */
-      --paper:#fffafc; /* “papel” */
-      --shadow: rgba(0,0,0,.08);
+      --bg1:#FFF4A8;        /* amarelo claro */
+      --bg2:#FFE169;        /* amarelo médio */
+      --paper:#FFFBEA;      /* “papel” suave */
+      --ink:#2b2b2b;        /* texto */
+      --sub:#5c5c5c;        /* subtítulos */
+      --heart:#E31B54;      /* corações */
+      --rose:#F16E8E;
+      --shadow: 0 10px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
+      --radius: 18px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+
+    /* Fundo amarelo e layout responsivo */
     body{
       margin:0;
-      background: radial-gradient(1200px 600px at 80% 0%, var(--bg1), var(--bg2));
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
       color:var(--ink);
-      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      line-height:1.75;
+      background: linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100svh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:24px 12px; /* menos padding lateral em telas pequenas */
-      min-height: 100vh;
+      padding: clamp(12px, 3.5vw, 24px);
     }
-    .wrap{
-      width:min(860px, 100%);
-      max-width: 100%;
+
+    main{
+      width:100%;
+      max-width: 720px;
+      position: relative;
+      z-index: 2; /* acima dos corações flutuantes */
     }
-    .card{
-      background:var(--paper);
-      border-radius:24px;
-      padding:clamp(20px, 4vw, 44px);
-      box-shadow:0 12px 40px var(--shadow);
-      position:relative;
-      overflow: visible; /* importante para o coração não cortar */
-      border: 1px solid #f3e3ea;
-      display: flex;
-      flex-direction: column;
-      min-height: 300px; /* garantir altura mínima */
+
+    .letter{
+      background: var(--paper);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 4.5vw, 36px);
+      border: 2px solid rgba(0,0,0,.05);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(0.5px);
     }
-    .heart{
+
+    /* “Selo” de coração no canto */
+    .seal{
       position:absolute;
-      top: -60px;
-      right: -60px;
-      width:200px;
-      opacity:.09;
-      transform:rotate(-18deg);
-      animation:float 6s ease-in-out infinite;
-      pointer-events:none;
-      user-select:none;
-      z-index: 0;
+      top:12px; right:12px;
+      width:52px; height:52px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff 0 30%, transparent 32%),
+                  radial-gradient(circle at 70% 70%, #fff 0 30%, transparent 32%),
+                  var(--rose);
+      box-shadow: 0 4px 10px rgba(0,0,0,.12) inset, 0 2px 5px rgba(0,0,0,.08);
+      display:grid; place-items:center;
+      transform: rotate(10deg);
+      isolation:isolate;
     }
-    @keyframes float{
-      0%,100%{ transform:translateY(0) rotate(-18deg) }
-      50%{ transform:translateY(-10px) rotate(-18deg) }
+    .seal::after{
+      content:"❤";
+      color:#fff;
+      font-size:20px;
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,.25));
     }
-    h1{
-      margin:0 0 12px 0;
-      font-weight:800;
-      font-size:clamp(28px, 5vw, 40px);
-      letter-spacing:.5px;
-      position: relative;
-      z-index: 1;
-      word-break: break-word;
+
+    header h1{
+      margin:0 0 8px 0;
+      font-size: clamp(24px, 5.8vw, 36px);
+      letter-spacing: 0.5px;
     }
+
     .subtitle{
-      margin:0 0 24px 0;
-      color:#714b58;
-      font-style:italic;
-      position: relative;
-      z-index: 1;
-    }
-    .body{
-      font-size:clamp(16px, 2.2vw, 19px);
-      white-space: pre-wrap;
-      overflow-wrap: break-word;
-      position: relative;
-      z-index: 1;
-    }
-    .body p {
-      margin-top: 0;
-      margin-bottom: 1em;
-    }
-    .closing{
-      margin-top:28px;
-      font-weight:600;
-      position: relative;
-      z-index: 1;
-    }
-    .sig{
-      margin-top:6px;
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size:clamp(18px, 3vw, 22px);
-      color:#7a3648;
-      outline: none;
-      position: relative;
-      z-index: 1;
-    }
-    .actions{
+      margin:0 0 18px 0;
+      color:var(--sub);
+      font-size: clamp(13px, 3.4vw, 16px);
       display:flex;
-      gap:12px;
-      margin-top:26px;
-      flex-wrap:wrap;
-      position: relative;
-      z-index: 1;
+      align-items:center;
+      gap:.5em;
     }
-    button, a.btn{
-      border:0;
-      padding:10px 16px;
-      border-radius:999px;
-      background:var(--accent);
-      color:white;
-      font-weight:700;
-      cursor:pointer;
-      text-decoration:none;
-      box-shadow:0 8px 22px rgba(225,29,72,.25);
-      transition:.2s transform, .2s opacity, .2s box-shadow;
-      user-select: none;
+    .subtitle .heart{
+      color:var(--heart);
+      font-size: 1.1em;
     }
-    button:hover, a.btn:hover{
-      transform:translateY(-1px);
-      box-shadow:0 10px 26px rgba(225,29,72,.32);
+
+    .divider{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:18px 0 22px 0;
     }
-    .ghost{
-      background:transparent;
-      color:var(--accent);
-      border:2px solid var(--accent);
-      box-shadow:none;
+    .divider::before,
+    .divider::after{
+      content:"";
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,.18), transparent);
+      flex:1;
     }
-    footer{
-      text-align:center;
-      margin-top:16px;
-      font-size:12px;
-      color:#9a6f7f;
+    .divider .mini-hearts{
+      letter-spacing:.25em;
+      color:var(--heart);
+      font-size: 18px;
+      transform: translateY(-1px);
     }
-    /* pequenos corações animados */
-    .confetti{
-      position:absolute; inset:0; pointer-events:none;
-      z-index: 0;
+
+    .content p{
+      margin: 12px 0;
+      font-size: clamp(16px, 4.2vw, 19px);
     }
-    .dot{
-      position:absolute; width:12px; height:12px;
-      transform:translate(-50%, -50%) rotate(45deg);
-      animation: drift 7s linear infinite;
-      opacity:.18;
+
+    .greeting{
+      font-variant: common-ligatures;
+      margin-top: 2px;
     }
-    .dot::before, .dot::after{
+
+    .closing{
+      margin-top: 20px;
+    }
+
+    .signature{
+      margin-top: 6px;
+      font-family: "Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+      font-size: clamp(22px, 6.2vw, 30px);
+      color: var(--heart);
+    }
+
+    /* Bordas românticas sutis */
+    .margin-art{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+    .margin-art::before,
+    .margin-art::after{
       content:"";
       position:absolute;
-      width:12px; height:12px; background:var(--accent);
-      border-radius:50%
+      width:120px; height:120px;
+      background:
+        radial-gradient(circle at 30% 35%, rgba(227,27,84,.18) 0 35%, transparent 40%),
+        radial-gradient(circle at 70% 65%, rgba(241,110,142,.18) 0 35%, transparent 40%);
+      filter: blur(6px);
+      opacity:.6;
     }
-    .dot{ background:var(--accent); }
-    .dot::before{ left:-6px; }
-    .dot::after{ top:-6px; }
-    @keyframes drift{
-      from{ transform: translate(var(--x), 110%) rotate(45deg) }
-      to  { transform: translate(calc(var(--x) + 10px), -20%) rotate(45deg) }
+    .margin-art::before{ top:-30px; left:-30px; border-top-left-radius: 20px; }
+    .margin-art::after{ bottom:-30px; right:-30px; border-bottom-right-radius: 20px; }
+
+    /* Corações flutuantes no fundo */
+    .floating-hearts{
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
     }
-    @media (max-width: 400px){
-      body {
-        padding: 16px 8px;
-      }
-      .card {
-        padding: 20px 16px;
-      }
-      .body {
-        font-size: 16px;
-      }
+    .floating-hearts span{
+      position: absolute;
+      bottom: -12vh;
+      color: var(--heart);
+      opacity: .25;
+      animation: floatUp linear infinite;
+      text-shadow: 0 2px 2px rgba(0,0,0,.08);
+      will-change: transform, opacity;
+      user-select: none;
     }
-    @media print{
-      .actions, footer{ display:none }
-      body{ background:white; }
-      .card{ box-shadow:none; border:0 }
+    @keyframes floatUp{
+      0%{ transform: translateY(0) translateX(0) scale(1); opacity:.0; }
+      10%{ opacity:.25; }
+      100%{ transform: translateY(-120vh) translateX(var(--drift, 0px)) scale(1.25); opacity:0; }
+    }
+
+    /* Distribuição responsiva dos corações */
+    .floating-hearts span:nth-child(1){ left:5%;  font-size:18px;  animation-duration:12s; animation-delay:0s;   --drift:-12px;}
+    .floating-hearts span:nth-child(2){ left:15%; font-size:22px;  animation-duration:14s; animation-delay:2s;   --drift:8px;}
+    .floating-hearts span:nth-child(3){ left:25%; font-size:16px;  animation-duration:11s; animation-delay:4s;   --drift:-6px;}
+    .floating-hearts span:nth-child(4){ left:35%; font-size:26px;  animation-duration:15s; animation-delay:1s;   --drift:14px;}
+    .floating-hearts span:nth-child(5){ left:45%; font-size:20px;  animation-duration:13s; animation-delay:3s;   --drift:-10px;}
+    .floating-hearts span:nth-child(6){ left:55%; font-size:18px;  animation-duration:12.5s; animation-delay:5s; --drift:6px;}
+    .floating-hearts span:nth-child(7){ left:65%; font-size:24px;  animation-duration:16s; animation-delay:2.5s; --drift:-16px;}
+    .floating-hearts span:nth-child(8){ left:75%; font-size:17px;  animation-duration:12s; animation-delay:1.5s; --drift:10px;}
+    .floating-hearts span:nth-child(9){ left:85%; font-size:22px;  animation-duration:14.5s; animation-delay:3.5s; --drift:-8px;}
+    .floating-hearts span:nth-child(10){left:50%; font-size:28px;  animation-duration:17s; animation-delay:0.8s; --drift:12px;}
+    .floating-hearts span:nth-child(11){left:8%;  font-size:14px;  animation-duration:12.2s;animation-delay:6s;  --drift:-5px;}
+    .floating-hearts span:nth-child(12){left:92%; font-size:16px;  animation-duration:13.8s;animation-delay:4.2s; --drift:7px;}
+
+    /* Respeita usuários com redução de movimento */
+    @media (prefers-reduced-motion: reduce){
+      .floating-hearts{ display:none; }
+      .seal{ transform:none; }
+      *{ animation: none !important; transition: none !important; }
+    }
+
+    /* Melhor leitura em telas muito estreitas */
+    @media (max-width: 360px){
+      .seal{ width:44px; height:44px; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <article class="card" role="article" aria-label="Carta romântica">
-      <!-- ícone de coração grande e discreto -->
-      <svg class="heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false" >
-        <path d="M12 21s-6.7-4.35-9.3-7.2C.5 11.3.9 7.6 3.7 5.8 6.6 3.9 9.3 5.4 12 8c2.7-2.6 5.4-4.1 8.3-2.2 2.8 1.8 3.2 5.5.9 8-2.6 2.85-9.2 7.2-9.2 7.2z" fill="currentColor"/>
-      </svg>
-
-      <!-- corações flutuantes -->
-      <div class="confetti" aria-hidden="true">
-        <div class="dot" style="--x:10%"></div>
-        <div class="dot" style="--x:30%"></div>
-        <div class="dot" style="--x:50%"></div>
-        <div class="dot" style="--x:70%"></div>
-        <div class="dot" style="--x:85%"></div>
-      </div>
-
-      <h1>Para <span contenteditable="true">[Nome]</span></h1>
-      <p class="subtitle">um pedacinho do que sinto por você</p>
-
-      <div class="body">
-        <p>
-          Desde que te conheci, alguns detalhes do mundo ficaram mais bonitos:
-          o café parece mais cheiroso, a música soa mais doce e o tempo passa
-          no ritmo das tuas risadas. Eu gosto de como a nossa conversa flui,
-          de como você me olha com calma, e de como tudo fica leve quando a
-          gente divide até os silêncios.
-        </p>
-        <p>
-          Não quero apressar nada — só quero estar por perto, descobrindo aos
-          poucos o teu jeito de ver a vida. Se você topar, eu topo seguir
-          construindo algo sincero, do nosso jeito, com cuidado, respeito e um
-          tantinho de poesia no meio do caminho.
-        </p>
-        <p>
-          Obrigado(a) por existir exatamente como você é. Você tem sido a minha
-          coincidência favorita.
-        </p>
-      </div>
-
-      <div class="closing">Com carinho,</div>
-      <div class="sig" contenteditable="true" aria-label="Assinatura">[Seu nome]</div>
-
-      <div class="actions" aria-label="Ações">
-        <button onclick="window.print()">Imprimir</button>
-        <a class="btn ghost" href="#" onclick="compartilhar(event)">Compartilhar</a>
-      </div>
-    </article>
-
-    <footer>
-      Dica: clique em <em>[Nome]</em> e <em>[Seu nome]</em> para editar diretamente.
-    </footer>
+  <!-- Corações de fundo (decorativos) -->
+  <div class="floating-hearts" aria-hidden="true">
+    <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
+    <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
   </div>
 
+  <main>
+    <article class="letter" role="article" aria-label="Carta romântica">
+      <div class="margin-art" aria-hidden="true"></div>
+      <div class="seal" aria-hidden="true" title="Selo de amor"></div>
+
+      <header>
+        <h1>Carta para você</h1>
+        <p class="subtitle">
+          <span aria-hidden="true" class="heart">💌</span>
+          Esta sendo incrível te conhecer!
+        </p>
+        <div class="divider" aria-hidden="true">
+          <span class="mini-hearts">❤ ❤ ❤</span>
+        </div>
+      </header>
+
+      <section class="content">
+        <p class="greeting">Para Duda,</p>
+
+        <p>Desde que te conheci, alguns detalhes do mundo ficaram mais bonitos: o café parece mais cheiroso, a música soa mais bela. Gosto de como a nossa conversa flui.</p>
+
+        <p>Não quero apressar nada — só quero estar por perto, descobrindo aos poucos o teu jeito de ver a vida. Se você topar, eu topo seguir construindo algo sincero, do nosso jeito, com cuidado, respeito e um tantinho de poesia pelo caminho.</p>
+
+        <p>Você tem sido a minha coincidência favorita.</p>
+
+        <p class="closing">Com carinho,</p>
+        <p class="signature">Mateus</p>
+      </section>
+    </article>
+  </main>
+
   <script>
-    // Compartilhar usando a Web Share API (quando disponível)
-    function compartilhar(e){
-      e.preventDefault();
-      const nome = document.querySelector('h1 span').innerText.trim() || "você";
-      const assin = document.querySelector('.sig').innerText.trim() || "eu";
-      const texto = `Para ${nome}\n\n` +
-        `Desde que te conheci, alguns detalhes do mundo ficaram mais bonitos... \n` +
-        `Obrigado(a) por existir exatamente como você é. Você tem sido a minha coincidência favorita.\n\n` +
-        `Com carinho,\n${assin}`;
-      if(navigator.share){
-        navigator.share({ title: "Uma carta para você", text: texto })
-          .catch(()=>{});
-      }else{
-        alert("Copiei o texto pra você colar onde quiser. ❤️");
-        copiar(texto);
-      }
-    }
-    function copiar(t){
-      const ta = document.createElement('textarea');
-      ta.value = t;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-    }
+    // Pequena melhoria: embaralhar leve o atraso dos corações a cada carregamento
+    (function(){
+      const hearts = document.querySelectorAll('.floating-hearts span');
+      hearts.forEach((h, i) => {
+        const extraDelay = Math.random() * 4;
+        const extraDrift = (Math.random() * 24 - 12).toFixed(1);
+        const extraSize = (Math.random() * 8 - 4).toFixed(0);
+        h.style.animationDelay = `calc(${getComputedStyle(h).animationDelay} + ${extraDelay}s)`;
+        h.style.setProperty('--drift', `calc(${getComputedStyle(h).getPropertyValue('--drift') || '0px'} + ${extraDrift}px)`);
+        h.style.fontSize = `calc(${getComputedStyle(h).fontSize} + ${extraSize}px)`;
+      });
+    })();
   </script>
 </body>
 </html>
